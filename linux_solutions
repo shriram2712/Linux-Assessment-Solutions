@@ -1,0 +1,118 @@
+
+
+Solutions
+
+1) Consider a text file which has multi-lines text, output all the lines which has a specific word and also output the total number of occurrences of that word.
+
+Command to output all lines which has a specific word
+->grep 'mellons' sample.txt
+Mark watermellons 12
+Oliver rockmellons 2
+Mark watermellons 12
+Oliver rockmellons 2
+Mark watermellons 12
+Oliver rockmellons 2
+Mark watermellons 12
+Oliver rockmellons 2
+Mark watermellons 12
+Oliver rockmellons 2
+
+Command to give the word count of the occurences of the word
+
+->grep -o 'mellons' sample.txt | wc -l
+10
+
+
+2) Search for all the files that have a ‘.txt’ extension in the current working directory.
+
+root@Quantiphi-928:/home/shriram/Desktop/LinuxAssessment# ls
+1.txt  2.txt  3.txt  linux_solutions.odt  sample.txt
+root@Quantiphi-928:/home/shriram/Desktop/LinuxAssessment# find . -type f -name "*.txt"
+./3.txt
+./1.txt
+./sample.txt
+./2.txt
+
+3) Execute a specific command in all the subdirectories whose names starts with “aws”. For example, your sub-directories are “aws_1”, “aws_2”, “gcp_1”, “aws_3”., Execute “pwd” command in the directories “aws_1”, “aws_2” and “aws_3”.
+
+shriram@Quantiphi-928:~/Desktop/LinuxAssessment$ ls
+1.txt  2.txt  3.txt  aws_1  aws_2  aws_3  gcp_1  linux_solutions.odt  sample.txt
+shriram@Quantiphi-928:~/Desktop/LinuxAssessment$ for d in `find . -type d -name "aws*"`; do (cd "$d" && pwd); done
+/home/shriram/Desktop/LinuxAssessment/aws_2
+/home/shriram/Desktop/LinuxAssessment/aws_3
+/home/shriram/Desktop/LinuxAssessment/aws_1
+shriram@Quantiphi-928:~/Desktop/LinuxAssessment$ 
+
+4) Consider a text file and replace a specific word with any word of your choice.
+
+shriram@Quantiphi-928:~/Desktop/LinuxAssessment$ cat sample.txt
+Fred apples 20
+Susy oranges 5
+Mark watermellons 12
+Robert pears 4
+Terry oranges 9
+Lisa peaches 7
+Susy oranges 12
+Mark grapes 39
+Anne mangoes 7
+Greg pineapples 3
+Oliver rockmellons 2
+Betty limes 14
+shriram@Quantiphi-928:~/Desktop/LinuxAssessment$ sed s/mellons/pines/g sample.txt
+Fred apples 20
+Susy oranges 5
+Mark waterpines 12
+Robert pears 4
+Terry oranges 9
+Lisa peaches 7
+Susy oranges 12
+Mark grapes 39
+Anne mangoes 7
+Greg pineapples 3
+Oliver rockpines 2
+Betty limes 14
+
+5) Use jq command line tool to get the arn of the s3 bucket from the file “s3_info.txt” which has the below content
+
+root@Quantiphi-928:/home/shriram/Desktop/LinuxAssessment# cat s3_info.txt
+{
+  "Records": [
+    {
+      "eventVersion": "2.0",
+      "eventTime": "1970-01-01T00:00:00.000Z",
+      "requestParameters": {
+        "sourceIPAddress": "127.0.0.1"
+      },
+      "s3": {
+        "configurationId": "testConfigRule",
+        "object": {
+          "eTag": "0123456789abcdef0123456789abcdef",
+          "sequencer": "0A1B2C3D4E5F678901",
+          "key": "HappyFace.jpg",
+          "size": 1024
+        },
+        "bucket": {
+          "arn": "arn:aws:s3:::mybucket",
+          "name": "sourcebucket",
+          "ownerIdentity": {
+            "principalId": "EXAMPLE"
+          }
+        },
+        "s3SchemaVersion": "1.0"
+      },
+      "responseElements": {
+        "x-amz-id-2": "EXAMPLE123/5678abcdefghijklambdaisawesome/mnopqrstuvwxyzABCDEFGH",
+        "x-amz-request-id": "EXAMPLE123456789"
+      },
+      "awsRegion": "us-east-1",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "EXAMPLE"
+      },
+      "eventSource": "aws:s3"
+    }
+  ]
+}
+root@Quantiphi-928:/home/shriram/Desktop/LinuxAssessment# jq '.Records[0].s3.bucket.arn' s3_info.txt
+"arn:aws:s3:::mybucket"
+
